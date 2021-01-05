@@ -1,0 +1,75 @@
+/* Styles for the Web/App Design */
+body {
+  background-color: maroon;
+}
+
+#navbar {
+  overflow: hidden;
+  background-color: #333;
+  top: 0;
+  width: 100%;
+}
+
+#navbar a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+#navbar a:hover {
+  background: #ddd;
+  color: black;
+}
+
+#sitetitle {
+  padding-left: 650px;
+  color: #ddd;
+}
+
+#box {
+  padding-left: 85px;
+}
+
+#main {
+  background-color: lightblue;
+  width: 300px;
+  border: 15px solid rgb(207, 9, 42);
+  padding: 50px;
+  margin: 20px;
+  display: inline-block;
+}
+
+#sort-section {
+  padding-top: 50px;
+  padding-left: 600px;
+}
+
+#cart-page {
+  padding-left: 85px;
+}
+
+#display-cart {
+  background-color: lightblue;
+  width: 300px;
+  border: 15px solid rgb(207, 9, 42);
+  padding: 50px;
+  margin: 20px;
+  display: inline-block;
+}
+
+#checkout-section {
+  background-color: goldenrod;
+  width: 300px;
+  border: 15px solid rgb(207, 9, 42);
+  padding: 50px;
+  margin: 20px;
+  display: inline-block;
+}
+
+#msg {
+  color: green;
+}

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Learning App</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="js/Lessons.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styles.css" type="text/css">
+</head>
+
+<body>
+    <div id="app">
+        <header id="navbar">
+            <h1 id="sitetitle" v-text="sitename"></h1>
+            <button v-show="btnCart" id="btnCart" v-on:click='showCart'>
+                <!--Returns the Number of Items Inside the Cart.-->
+                {{cartItemCount}}
+                <span id="btnText" class="fas fa-cart-plus" v-on:click='switchText'> Cart</span>
+            </button>
+        </header>
+        <main>
+            <!--If this sections shows true then in will display the lessons section on the webpage-->
+            <div id="box" v-if='showLessonsPage'>
+                <div id="sort-section">
+                    <h1>Sorting By:</h1>
+                    <!--V-model - Sort will automatically pick up changes and update the data on screen-->
+                    <select v-model="sort" v-on:change="sortLessons">
+                        <!--Accroding to each value of the switch case it will execute that case/function and sort those subjects.-->
+                        <option :value="1">Subject Name: A to Z</option>
+                        <option :value="2">Subject Name: Z to A</option>
+                        <option :value="3">Location: A to Z</option>
+                        <option :value="4">Location: Z to A</option>
+                        <option :value="5">Price: Cheap to Expensive</option>
+                        <option :value="6">Price: Expensive to Cheap</option>
+                        <option :value="7">Availability: High to Low</option>
+                        <option :value="8">Availability: Low to High</option>
+                    </select>
+                </div>
+                <div id="main" v-for="(lesson, Space) in lessons">
+                    <!--Space is the index value of each lesson-->
+
+                    <!--Using this V-for all the lessons in the lessons.js will be displayed in this section.
+                    lessons means all the lessons, lesson means one lesson from the lesson.js, it get's each and displays them here.-->
+                    <h1>Subject: {{lesson.SubjectName}}</h1>
+                    <h2>Location: {{lesson.Location}}</h2>
+                    <h3>Price: £{{lesson.Price}}</h3>
+
+                    <!--If the lesson space is equal and equal type to the cart Count then it should show this message. 
+                    5 is the maxium space for one lesson so if a lesson space is equal/type to 5 then it should display this message.-->
+                    <span v-if='lesson.Space === cartCount(lesson)'>
+                        <h4>Spaces Full</h4>
+                    </span>
+
+                    <!--Else If lesson space is less then 5 then redcue one space using the minus operater, also 
+                    showing the updated spaces on the page as its being reuced. This will automatiicly stop when it will go greater then 5.-->
+                    <span v-else-if="lesson.Space - cartCount(lesson) < 5">
+                        <h4>Available Spaces: {{lesson.Space - cartCount(lesson)}}</h4>
+                    </span>
+
+                    <!--Else if will just show the remaining spaces left in the lessons.-->
+                    <span v-else>
+                        <h4>Available Spaces: {{lesson.Space}}</h4>
+                    </span>
+
+                    <figure>
+                        <img v-bind:src="lesson.Image" height="100" width="100">
+                    </figure>
+
+                    <!--Clicking on the add to cart button will add a lesson to the cart util it can add to the cart. -->
+                    <!--If it can add to cart then the button will be diplayed an the user can keep on adding-->
+                    <button v-on:click='addToCart(lesson, Space)' v-if='canAddToCart(lesson)'>Add to cart</button>
+
+                    <!--If it cannot add as spaces will be full then  it will hide the button.-->
+                    <button id="hide" hidden="hidden" v-else>Add to cart</button>
+                </div>
+            </div>
+            <!--If the show lessons page == false then it will switch to the cart section and display the cart section on the app -->
+            <div id="cart-page" v-else>
+                <!--Switching to the Cart Page-->
+                <center>
+                    <h1>Cart</h1>
+                </center>
+
+                <!--Displaying Lessons from the Cart Array-->
+                <div id="display-cart" v-for="cart in displayLessonsCart">
+                    <!--cart is one elemnt of the displayLessonsCart Array-->
+                    <h1>{{ cart.SubjectName }}</h1>
+                    <p>Location: {{ cart.Location }}</p>
+                    <h3>Price: £{{ cart.Price }}</h3>
+                    <h4>Spaces: {{ cart.Space }}</h4>
+                    <img v-bind:src="cart.Image" height="60px" width="60px"><br><br>
+                    <!--This button removes the lesson from the cart, cart is know as one lesson inside the cart array-->
+                    <button v-on:click="removeLesson(cart)">Remove</button>
+                </div>
+
+                <br>
+
+                <!--Displaying The Checkout-->
+                <div id="checkout-section">
+                    <h2>Checkout</h2>
+                    <p>
+                        <strong>Name:</strong>
+                        <!-- This input field is for entering the Name. -->
+                        <input v-model.trim="checkout.Name" />
+                    </p>
+                    <p>
+                        <strong>Phone Number:</strong>
+                        <!-- This input field is for entering the Phonenumber. -->
+                        <input v-model.trim="checkout.PhoneNo" />
+                    </p>
+
+                    <h2>Order Information</h2>
+                    <p>First Name: {{checkout.Name}}</p>
+                    <p>Phone Number: {{checkout.PhoneNo}}</p>
+                    <!--If the users inputted name and phoneNo is both true it will display the checkout button else it won't-->
+                    <!--Once it's true then, the user can purchase-->
+                    <button v-on:click="purchase" v-if="checkCheckout">Checkout</button>
+                    <p v-show="checkoutMsg" id="msg">
+                        Your Order has been purhcased.
+                        Wait 5 Seconds as you are being redirected...
+                    </p>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script type="text/javascript">
+        let lessonApp = new Vue({
+            el: '#app',
+            data: { //All the varibles and data for the V-show, V-model, and lessons cart data are defined in this section.
+                sitename: 'Lessons-App',
+                lessons: JSON.parse(localStorage.getItem("Lessons")),
+                displayLessonsCart: [],
+                showLessonsPage: true,
+                btnCart: true,
+                sort: '',
+                checkout: {
+                    Name: '',
+                    PhoneNo: '',
+                },
+                checkoutMsg: false, //This is the checkout message which is hidden at the moment. 
+                orders: [],
+            },
+            mounted() { //This is used when the page first loads up, this will execute everyting in the beggining. 
+                this.btnCart = false;   //Button is hidden as no items in the cart have been added.
+            },
+            methods: {
+                showCart() {
+                    //Getting the Cart for displaying.
+                    this.displayLessonsCart = JSON.parse(localStorage.getItem("Cart"));
+                    this.showLessonsPage = this.showLessonsPage ? false : true; //Turn the message to false to display the cart. 
+                    localStorage.setItem("Lessons", JSON.stringify(this.lessons));
+                },
+                switchText() {  //This is used to change the button text as you switch beetween the lessons and cart page.
+                    let btnText = document.getElementById("btnText");
+                    if (btnText.innerHTML === " Cart") {
+                        btnText.innerHTML = " Lessons";
+                    } else {
+                        btnText.innerHTML = " Cart";
+                    }
+                },
+                cartCount(lesson) { //Finding a lesson element from the cart which will equal the same lesson. 
+                    let count = 0;
+                    //This for-loop is going to go through everyting inside of the cart. 
+                    for (let i = 0; i < this.displayLessonsCart.length; i++) {
+                        //If an element of the cart is equal/equal type to the input(lesson) then, the count will increase by 1.
+                        if (this.displayLessonsCart[i] === lesson) {
+                            count++;
+                        }
+                    }
+                    return count; //Returns the count of how many have been identified.
+                },
+                addToCart(lesson, Space) {
+                    this.btnCart = true;    //If one lesson is added to the cart then it will show the cart button.
+                    this.displayLessonsCart.push(lesson);   //Pushing the lessing into the Cart Array.
+                    localStorage.setItem("Cart", JSON.stringify(this.displayLessonsCart));  //Updatimg the Cart each time a lesson is added. 
+
+                    //This is used for redcucing the space inside the cart array.
+                    //The varible space gets the index number of the lesson in the lessons array.
+                    let getLessons = JSON.parse(localStorage.getItem("Lessons"));   //Gets all the lessons in the lessons array.
+                    getLessons[Space].Space--;  //Reduce the space by the index value. it fins the index vlaue by space and reduces it.
+                    this.lessons = getLessons;  //Updates the lessons array.
+                    localStorage.setItem("Lessons", JSON.stringify(getLessons));    //Sets the updated version to the localstorage.
+                },
+                canAddToCart(lesson) {
+                    //Comparing how many is already in the cart with the actual lesson space. 
+                    return lesson.Space > this.cartCount(lesson);
+                },
+                sortLessons() {
+                    switch (this.sort) {
+                        case 1:
+                            let sortedValues1 = this.lessons.sort((a, b) => {    //For High to Low
+                                if (a.SubjectName > b.SubjectName) {    //If this statement is true then it will return 1.
+                                    return 1;
+                                } else if (a.SubjectName < b.SubjectName) { //If this statement is true then it will return -1
+                                    return -1;
+                                } else {
+                                    return 0;   //Else it just returns 0. 
+                                }
+                            })
+                            localStorage.setItem("Lessons", JSON.stringify(sortedValues1)); //For each array I would have to update the localstorge therefore it, doesn't recognisge the incorrect index value.
+                            return sortedValues1;
+                        case 2:
+                            let sortedValues2 = this.lessons.sort((a, b) => {    //For Low to High
+                                if (a.SubjectName > b.SubjectName) {
+                                    return -1;
+                                } else if (a.SubjectName < b.SubjectName) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            })
+                            localStorage.setItem("Lessons", JSON.stringify(sortedValues2));
+                            return sortedValues2;
+                        case 3:
+                            let sortedValues3 = this.lessons.sort((a, b) => {
+                                if (a.Location > b.Location) {
+                                    return 1;
+                                } else if (a.Location < b.Location) {
+                                    return -1;
+                                } else {
+                                    return 0;
+                                }
+                            })
+                            localStorage.setItem("Lessons", JSON.stringify(sortedValues3));
+                            return sortedValues3;
+                        case 4:
+                            let sortedValues4 = this.lessons.sort((a, b) => {
+                                if (a.Location > b.Location) {
+                                    return -1;
+                                } else if (a.Location < b.Location) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            })
+                            localStorage.setItem("Lessons", JSON.stringify(sortedValues4));
+                            return sortedValues4;
+                        case 5:
+                            let sortedValues5 = this.lessons.sort((a, b) => {
+                                if (a.Price > b.Price) {
+                                    return 1;
+                                } else if (a.Price < b.Price) {
+                                    return -1;
+                                } else {
+                                    return 0;
+                                }
+                            })
+                            localStorage.setItem("Lessons", JSON.stringify(sortedValues5));
+                            return sortedValues5;
+                        case 6:
+                            let sortedValues6 = this.lessons.sort((a, b) => {
+                                if (a.Price > b.Price) {
+                                    return -1;
+                                } else if (a.Price < b.Price) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            })
+                            localStorage.setItem("Lessons", JSON.stringify(sortedValues6));
+                            return sortedValues6;
+                        case 7:
+                            let sortedValues7 = this.lessons.sort((a, b) => {
+                                if (a.Space > b.Space) {
+                                    return -1;
+                                } else if (a.Space < b.Space) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            })
+                            localStorage.setItem("Lessons", JSON.stringify(sortedValues7));
+                            return sortedValues7;
+                        case 8:
+                            let sortedValues8 = this.lessons.sort((a, b) => {
+                                if (a.Space > b.Space) {
+                                    return 1;
+                                } else if (a.Space < b.Space) {
+                                    return -1;
+                                } else {
+                                    return 0;
+                                }
+                            })
+                            localStorage.setItem("Lessons", JSON.stringify(sortedValues8));
+                            return sortedValues8;
+                    }
+                },
+                removeLesson(cart) {
+                    const index = this.displayLessonsCart.indexOf(cart);    //Finds the index of the Cart Array. 
+                    if (index !== -1) { //If index of the cart array is not equal value or equal type. 
+                        this.displayLessonsCart.splice(index, 1);   //Splice is used to remove that index. 
+                    }
+                    localStorage.setItem("Cart", JSON.stringify(this.displayLessonsCart));  //Updates the Cart Array. 
+
+                    //This function will execute when cart == 0.
+                    if (this.displayLessonsCart == 0) {
+                        location.reload();
+                        this.btnCart = false; //As the cart has 0 lessons the button will not be visible.
+                        this.showLessonsPage = this.showLessonsPage ? false : true; //This will Automatticly chnage to the lesson webpage from the cart page.
+                    }
+                },
+                purchase() {    //This function is when the user has pressed the checkout button to purchase the lessons. 
+                    this.checkoutMsg = true;
+
+                    //Gets the current Itmes Inside the Cart.
+                    let userOrders = JSON.parse(localStorage.getItem("Cart"));
+
+                    //Creating a user object to store the user name, phoneumber and the userorders.
+                    let userDetails = {
+                        Username: this.checkout.Name,
+                        Phonenumber: this.checkout.PhoneNo,
+                        Orders: userOrders,
+                    };
+                    this.orders.push(userDetails);
+                    localStorage.setItem("Orders", JSON.stringify(this.orders));    //The order is stored
+
+                    //This will reset the application after an order has been placed.
+                    setTimeout(function () {
+                        this.displayLessonsCart = [];   //clears the cart after the order has been purchased.
+                        localStorage.setItem("Cart", JSON.stringify(this.displayLessonsCart));  //Resetting the cart array.
+                        location.reload();
+                    }, 5000);   //Refreshes after 5 seconds. 
+                },
+                validateCheckout(name, phoneNumber) {   //This function is used to validate the name and the phonenumber.
+                    let regExname = /^[A-Za-z]+$/;
+                    let regExphoneNumber = /^[\s()+-]*([0-9][\s()+-]*){11,20}$/;
+                    return regExname.test(name) && regExphoneNumber.test(phoneNumber);  //It will check the name and phonenumber with each of their regex.
+                },
+            },
+            computed: {
+                cartItemCount() {
+                    return this.displayLessonsCart.length; //Returns the number of items inside the cart and will update on the increse and decrease.
+                },
+                checkCheckout() { //This function checks the validation of the name and phonenumber inputted by the validate function.
+                    if (!this.validateCheckout(this.checkout.Name, this.checkout.PhoneNo)) {
+                        return false;   //Returns false which means either the name, phonoNo, or Both are incorrect.
+                    } else {
+                        return true;    //Returns true if both matches the regex. 
+                    }
+                },
+            },
+        });
+
+    </script>
+</body>
+
+</html>

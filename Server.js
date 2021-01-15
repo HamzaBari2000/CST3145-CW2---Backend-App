@@ -5,6 +5,16 @@ const MongoClient = require("mongodb").MongoClient;
 
 const app = express();
 
+let db;
+MongoClient.connect(
+  "mongodb+srv://hamza:cw2@cluster0.nxvhu.mongodb.net/learningApp?retryWrites=true&w=majority",
+  (err, client) => {
+    db = client.db("learningApp");
+  }
+);
+
+//Start of Middleware
+
 app.use(function (req, res, next) {
   console.log("Request IP: " + req.url);
   console.log("Request date: " + new Date());
@@ -31,6 +41,8 @@ app.use(function (req, res) {
   // Sends the error "File not found!”
   res.send("File not found, Please enter the correct file path or name!");
 });
+
+//End of Middleware
 
 app.listen(3000, function () {
   console.log("App started on port 3000");

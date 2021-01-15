@@ -5,6 +5,8 @@ const MongoClient = require("mongodb").MongoClient;
 
 const app = express();
 
+//Start of the database
+
 let db;
 MongoClient.connect(
   "mongodb+srv://hamza:cw2@cluster0.nxvhu.mongodb.net/learningApp?retryWrites=true&w=majority",
@@ -12,6 +14,24 @@ MongoClient.connect(
     db = client.db("learningApp");
   }
 );
+
+app.param("collectionName", (req, res, next, collectionName) => {
+  req.collection = db.collection(collectionName);
+  return next();
+});
+
+app.get("/", (req, res, next) => {
+  res.send("Select a collection, e.g., /collection/messages");
+});
+
+app.get("/collection/:collectionName", (req, res, next) => {
+  req.collection.find({}).toArray((e, results) => {
+    if (e) return next(e);
+    res.send(results);
+  });
+});
+
+//End of the Database
 
 //Start of Middleware
 

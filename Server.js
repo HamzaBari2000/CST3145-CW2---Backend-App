@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
+const MongoClient = require("mongodb").MongoClient;
 
 const app = express();
 
@@ -28,7 +29,7 @@ app.use(function (req, res) {
   // Sets the status code to 404
   res.status(404);
   // Sends the error "File not found!”
-  res.send("File not found!");
+  res.send("File not found, Please enter the correct file path or name!");
 });
 
 app.listen(3000, function () {

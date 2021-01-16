@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const MongoClient = require("mongodb").MongoClient;
+const ObjectID = require("mongodb").ObjectID;
 const bodyParser = require("body-parser");
 
 const app = express();
@@ -42,6 +43,19 @@ app.post("/collection/:collectionName", (req, res, next) => {
     if (e) return next(e);
     res.send(results.ops);
   });
+});
+
+//A PUT Route which updates the number of available spaces in the ‘lesson’ collection.
+app.put("/collection/:collectionName/:id", (req, res, next) => {
+  req.collection.update(
+    { _id: new ObjectID(req.params.id) },
+    { $set: req.body },
+    { safe: true, multi: false },
+    (e, result) => {
+      if (e) return next(e);
+      res.send(result.result.n === 1 ? { msg: "Updated" } : { msg: "Error" });
+    }
+  );
 });
 
 //End of the Database

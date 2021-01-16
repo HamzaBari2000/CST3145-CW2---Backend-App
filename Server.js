@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const MongoClient = require("mongodb").MongoClient;
+const bodyParser = require("body-parser");
 
 const app = express();
 
@@ -24,10 +25,22 @@ app.get("/", (req, res, next) => {
   res.send("Select a collection, e.g., /collection/messages");
 });
 
+//A GET Route which returns all the lessons.
 app.get("/collection/:collectionName", (req, res, next) => {
   req.collection.find({}).toArray((e, results) => {
     if (e) return next(e);
     res.send(results);
+  });
+});
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+//A POST Route Which saves the new Order to the Database.
+app.post("/collection/:collectionName", (req, res, next) => {
+  req.collection.insert(req.body, (e, results) => {
+    if (e) return next(e);
+    res.send(results.ops);
   });
 });
 

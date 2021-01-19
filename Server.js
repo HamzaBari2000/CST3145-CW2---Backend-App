@@ -17,6 +17,14 @@ MongoClient.connect(
   }
 );
 
+app.use(function (req, res, next) {
+  // allow different IP address
+  res.header("Access-Control-Allow-Origin", "*");
+  // allow different header fields
+  res.header("Access-Control-Allow-Headers", "*");
+  next();
+});
+
 app.param("collectionName", (req, res, next, collectionName) => {
   req.collection = db.collection(collectionName);
   return next();
@@ -39,20 +47,10 @@ app.get("/collection/:collectionName", (req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(function (req, res, next) {
-  // allow different IP address
-  res.header("Access-Control-Allow-Origin", "*");
-  // allow different header fields
-  res.header("Access-Control-Allow-Headers", "*");
-  next();
-});
-
 //A POST Route Which saves the new Order to the Database.
 app.post("/collection/:collectionName", (req, res, next) => {
   req.collection.insert(req.body, (e, results) => {
     if (e) return next(e);
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "*");
     res.send(results.ops);
   });
 });

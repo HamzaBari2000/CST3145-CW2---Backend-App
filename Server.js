@@ -39,20 +39,20 @@ app.get("/collection/:collectionName", (req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//A POST Route Which saves the new Order to the Database.
-app.post("/collection/:collectionName", (req, res, next) => {
-  req.collection.insert(req.body, (e, results) => {
-    if (e) return next(e);
-    res.send(results.ops);
-  });
-});
-
 app.use(function (req, res, next) {
   // allow different IP address
   res.header("Access-Control-Allow-Origin", "*");
   // allow different header fields
   res.header("Access-Control-Allow-Headers", "*");
   next();
+});
+
+//A POST Route Which saves the new Order to the Database.
+app.post("/collection/:collectionName", (req, res, next) => {
+  req.collection.insert(req.body, (e, results) => {
+    if (e) return next(e);
+    res.send(results.ops);
+  });
 });
 
 //A PUT Route which updates the number of available spaces in the ‘lesson’ collection.

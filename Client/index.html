@@ -4,7 +4,6 @@
 <head>
     <title>Learning App</title>
     <script src="https://unpkg.com/vue"></script>
-    <script src="js/Lessons.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -133,7 +132,7 @@
             el: '#app',
             data: { //All the varibles and data for the V-show, V-model, and lessons cart data are defined in this section.
                 sitename: 'Lessons-App',
-                lessons: JSON.parse(localStorage.getItem("Lessons")),
+                lessons: {},
                 displayLessonsCart: [],
                 showLessonsPage: true,
                 btnCart: true,
@@ -344,6 +343,16 @@
                     }
                 },
             },
+            created: function () {
+                fetch('https://cst3145--cw2.herokuapp.com/collection/Lesson').then(
+                    function (response) {
+                        response.json().then(
+                            function (json) {
+                                // note that we used 'store.product' instead of 'this.product'
+                                lessonApp.lessons = json;
+                            });
+                    })
+            }
         });
 
     </script>

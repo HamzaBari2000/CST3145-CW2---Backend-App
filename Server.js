@@ -91,6 +91,14 @@ app.use(function (req, res) {
 
 //End of Middleware
 
+app.use(function (req, res, next) {
+  // allow different IP address
+  res.header("Access-Control-Allow-Origin", "*");
+  // allow different header fields
+  res.header("Access-Control-Allow-Headers", "*");
+  next();
+});
+
 const port = process.env.PORT || 3000;
 app.listen(port);
 console.log("App started on port 3000");

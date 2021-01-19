@@ -30,6 +30,7 @@ app.get("/", (req, res, next) => {
 app.get("/collection/:collectionName", (req, res, next) => {
   req.collection.find({}).toArray((e, results) => {
     if (e) return next(e);
+    res.setHeader("Access-Control-Allow-Origin", "*");
     res.send(results);
   });
 });

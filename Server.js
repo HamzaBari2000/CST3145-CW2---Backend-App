@@ -7,12 +7,16 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
-app.use(function (req, res, next) {
-  // allow different IP address
-  res.header("Access-Control-Allow-Origin", "*");
-  // allow different header fields
-  res.header("Access-Control-Allow-Headers", "*");
-  next();
+app.get("/", function (req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  ); // If needed
+  res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,contenttype"); // If needed
+  res.setHeader("Access-Control-Allow-Credentials", true); // If needed
+
+  res.send("cors problem fixed:)");
 });
 
 //Start of the database

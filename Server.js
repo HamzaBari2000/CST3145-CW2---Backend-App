@@ -44,6 +44,7 @@ app.post("/collection/:collectionName", (req, res, next) => {
     res.send(results.ops);
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "*");
+    next();
   });
 });
 

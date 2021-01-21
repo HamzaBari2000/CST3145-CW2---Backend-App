@@ -7,6 +7,11 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 //Start of the database
 
 let db;
@@ -43,7 +48,6 @@ app.use(bodyParser.json());
 app.post("/collection/:collectionName", (req, res, next) => {
   req.collection.insert(req.body, (e, results) => {
     if (e) return next(e);
-    res.setHeader("Access-Control-Allow-Origin", "*");
     res.send(results.ops);
   });
 });

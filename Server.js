@@ -41,9 +41,10 @@ app.use(bodyParser.json());
 
 //A POST Route Which saves the new Order to the Database.
 app.post("/collection/:collectionName", (req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
   req.collection.insert(req.body, (e, results) => {
     if (e) return next(e);
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "*");
     res.send(results.ops);
   });
 });

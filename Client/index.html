@@ -180,10 +180,10 @@
 
                     //This is used for redcucing the space inside the cart array.
                     //The varible space gets the index number of the lesson in the lessons array.
-                    let getLessons = JSON.parse(localStorage.getItem("Lessons"));   //Gets all the lessons in the lessons array.
-                    getLessons[Space].Space--;  //Reduce the space by the index value. it fins the index vlaue by space and reduces it.
-                    this.lessons = getLessons;  //Updates the lessons array.
-                    localStorage.setItem("Lessons", JSON.stringify(getLessons));    //Sets the updated version to the localstorage.
+                    //let getLessons = JSON.parse(localStorage.getItem("Lessons"));   //Gets all the lessons in the lessons array.
+                    //getLessons[Space].Space--;  //Reduce the space by the index value. it fins the index vlaue by space and reduces it.
+                    //this.lessons = getLessons;  //Updates the lessons array.
+                    //localStorage.setItem("Lessons", JSON.stringify(getLessons));    //Sets the updated version to the localstorage.
                 },
                 canAddToCart(lesson) {
                     //Comparing how many is already in the cart with the actual lesson space. 
@@ -362,15 +362,13 @@
                                 'Content-Type': 'application/json'
                                 , // set the data type as JSON
                             },
-                            body: JSON.stringify("testing"), // need to stringify the JSON object
+                            body: JSON.stringify("test"), // need to stringify the JSON object
                         })
                         .then(response => response.json())
                         .then(responseJSON => {
                             console.log('Success:'
                                 , responseJSON);
                         });
-
-
             }
         });
 

@@ -30,7 +30,6 @@ app.get("/", (req, res, next) => {
 app.get("/collection/:collectionName", (req, res, next) => {
   req.collection.find({}).toArray((e, results) => {
     if (e) return next(e);
-
     res.send(results);
   });
 });
@@ -40,6 +39,9 @@ app.use(bodyParser.json());
 
 //A POST Route Which saves the new Order to the Database.
 app.post("/collection/:collectionName", (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "*");
+  next();
   req.collection.insert(req.body, (e, results) => {
     if (e) return next(e);
     res.send(results.ops);

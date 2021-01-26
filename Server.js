@@ -25,8 +25,12 @@ app.param("collectionName", (req, res, next, collectionName) => {
 app.use(function (req, res, next) {
   // allow different IP address
   res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "DELETE, POST, GET, OPTIONS");
   // allow different header fields
-  res.header("Access-Control-Allow-Headers", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+  );
   next();
 });
 

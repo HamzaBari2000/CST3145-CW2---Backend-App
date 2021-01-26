@@ -363,15 +363,7 @@
                                 'Content-Type': 'application/json'
                                 , // set the data type as JSON
                             },
-                            body: JSON.stringify({
-                                "name": "HamzaBari",
-                                "phonenumber": "0281745279111",
-                                "Order": [
-                                    { "lessonID": "S1", "Space": 5 },
-                                    { "lessonID": "S7", "Space": 5 },
-                                    { "lessonID": "S10", "Space": 5 }
-                                ]
-                            }), // need to stringify the JSON object
+                            body: JSON.stringify({ "name": "HamzaBari" }), // need to stringify the JSON object
                         })
                         .then(response => response.json())
                         .then(responseJSON => {

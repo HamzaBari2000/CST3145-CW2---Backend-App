@@ -24,7 +24,7 @@ app.param("collectionName", (req, res, next, collectionName) => {
 
 app.get("/", (req, res, next) => {
   res.send(
-    "Select a collection, e.g., /collection/collectionName or Select an Image, e.g., /Img/ImageName.png"
+    "Select a collection, e.g., /collection/collectionName or Select an Image, e.g., /ImageName.png"
   );
 });
 
@@ -32,6 +32,8 @@ app.get("/", (req, res, next) => {
 app.get("/collection/:collectionName", (req, res, next) => {
   req.collection.find({}).toArray((e, results) => {
     if (e) return next(e);
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "*");
     res.send(results);
   });
 });

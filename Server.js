@@ -23,6 +23,7 @@ app.param("collectionName", (req, res, next, collectionName) => {
 });
 
 app.get("/", (req, res, next) => {
+  res.send("Begginning");
   res.send("Select a collection, e.g., /collection/messages");
 });
 
@@ -42,18 +43,9 @@ app.post("/collection/:collectionName", (req, res, next) => {
   req.collection.insert(req.body, (e, results) => {
     if (e) return next(e);
     res.header("Access-Control-Allow-Origin", "*");
-    // allow different header fields
     res.header("Access-Control-Allow-Headers", "*");
     res.send(results.ops);
   });
-});
-
-app.use(function (req, res, next) {
-  // allow different IP address
-  res.header("Access-Control-Allow-Origin", "*");
-  // allow different header fields
-  res.header("Access-Control-Allow-Headers", "*");
-  next();
 });
 
 //A PUT Route which updates the number of available spaces in the ‘lesson’ collection.

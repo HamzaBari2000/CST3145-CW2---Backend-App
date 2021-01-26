@@ -51,6 +51,7 @@ app.use(bodyParser.json());
 app.post("/collection/:collectionName", (req, res, next) => {
   req.collection.insert(req.body, (e, results) => {
     if (e) return next(e);
+    res.sendStatus(200);
     res.send(results.ops);
   });
 });

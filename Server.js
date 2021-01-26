@@ -22,6 +22,14 @@ app.param("collectionName", (req, res, next, collectionName) => {
   return next();
 });
 
+app.use(function (req, res, next) {
+  // allow different IP address
+  res.header("Access-Control-Allow-Origin", "*");
+  // allow different header fields
+  res.header("Access-Control-Allow-Headers", "*");
+  next();
+});
+
 app.get("/", (req, res, next) => {
   res.send(
     "Select a collection, e.g., /collection/collectionName or Select an Image, e.g., /ImageName.png"
@@ -32,8 +40,6 @@ app.get("/", (req, res, next) => {
 app.get("/collection/:collectionName", (req, res, next) => {
   req.collection.find({}).toArray((e, results) => {
     if (e) return next(e);
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "*");
     res.send(results);
   });
 });
@@ -45,8 +51,6 @@ app.use(bodyParser.json());
 app.post("/collection/:collectionName", (req, res, next) => {
   req.collection.insert(req.body, (e, results) => {
     if (e) return next(e);
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "*");
     res.send(results.ops);
   });
 });

@@ -22,6 +22,7 @@ app.param("collectionName", (req, res, next, collectionName) => {
   return next();
 });
 
+/*
 app.use(function (req, res, next) {
   // allow different IP address
   res.header("Access-Control-Allow-Origin", "*");
@@ -33,6 +34,7 @@ app.use(function (req, res, next) {
   );
   next();
 });
+*/
 
 app.get("/", (req, res, next) => {
   res.send(
@@ -44,6 +46,8 @@ app.get("/", (req, res, next) => {
 app.get("/collection/:collectionName", (req, res, next) => {
   req.collection.find({}).toArray((e, results) => {
     if (e) return next(e);
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "*");
     res.send(results);
   });
 });
@@ -55,6 +59,8 @@ app.use(bodyParser.json());
 app.post("/collection/:collectionName", (req, res, next) => {
   req.collection.insert(req.body, (e, results) => {
     if (e) return next(e);
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "*");
     res.sendStatus(200);
     res.send(results.ops);
   });

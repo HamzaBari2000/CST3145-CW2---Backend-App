@@ -24,7 +24,7 @@ app.param("collectionName", (req, res, next, collectionName) => {
 
 app.get("/", (req, res, next) => {
   res.send(
-    "Select a collection, e.g., /collection/collectionName\nSelect a Image, e.g., /Img/ImageName.png"
+    "Select a collection, e.g., /collection/collectionName or Select an Image, e.g., /Img/ImageName.png"
   );
 });
 

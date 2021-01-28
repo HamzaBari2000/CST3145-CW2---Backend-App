@@ -1,11 +1,11 @@
-const express = require("express");
-const path = require("path");
-const fs = require("fs");
+const express = require("express"); //This is the required express module libary.
+const path = require("path"); //Required for finding the file path of the images/or any files.
+const fs = require("fs"); //Gets the information about the files.
 const MongoClient = require("mongodb").MongoClient;
 const ObjectID = require("mongodb").ObjectID;
 const bodyParser = require("body-parser");
 
-const app = express();
+const app = express(); //This is where the express app has been created by calling the express function.
 
 //Start of the database
 
@@ -74,37 +74,41 @@ app.put("/collection/:collectionName/:id", (req, res, next) => {
 
 //End of the Database
 
-//Start of Middleware
+//Start of Middleware for getting images.
 
+//This is the Middleware Logger which outputs the request to the server.
 app.use(function (req, res, next) {
-  console.log("Request IP: " + req.url);
-  console.log("Request date: " + new Date());
-  next();
+  //Outputs the URL when the server starts and updates the URL depending on the next request.
+  console.log("Request IP: " + req.url); //e.g., will return the Image path if reauested for an Image.
+  console.log("Request date: " + new Date()); //Outputs the current date when the server starts.
+  next(); //The next is used for stopping the browser from hanging. This way it will continue to the next function of the MR Stack.
 });
 
 app.use(function (req, res, next) {
-  // Uses path.join to find the path where the file should be
-  var filePath = path.join(__dirname, "Client/img", req.url);
-  // Built-in fs.stat gets info about a file
+  // The path.join has been used for finding the file from its directory. In this case the file was in the Client directory.
+  let filePath = path.join(__dirname, "Client/img", req.url);
+  // The fs.stat is used getting the information about the file.
   fs.stat(filePath, function (err, fileInfo) {
     if (err) {
       next();
       return;
     }
+    //If the Image file exists
     if (fileInfo.isFile()) res.sendFile(filePath);
     else next();
   });
 });
 
+//No next is required because this will be the last middleware.
 app.use(function (req, res) {
-  // Sets the status code to 404
+  // Sets the status code to 404, which is the error status.
   res.status(404);
-  // Sends the error "File not found!”
+  // If the file is not found or if there are any errors in the file path then, it will return this error message.
   res.send("File not found, Please enter the correct file path or name!");
 });
 
-//End of Middleware
+//End of for getting images.
 
 const port = process.env.PORT || 3000;
 app.listen(port);
-console.log("App started on port 3000");
+console.log("App has started on port " + port); //Returns a message onto the console to alert that the serer has been sated on this port number.

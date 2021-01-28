@@ -303,8 +303,9 @@
                                     .then(responseJSON => {
                                         console.log('Success:', responseJSON);
                                     });
+                                return sortedValues7;
                             }
-                            return sortedValues7;
+
                         case 8:
                             let sortedValues8 = this.lessons.sort((a, b) => {
                                 if (a.Space > b.Space) {

@@ -291,6 +291,7 @@
                                 }
                             })
                             localStorage.setItem("Lessons", JSON.stringify(sortedValues7));
+                            /*
                             fetch('https://cst3145--cw2.herokuapp.com/collection/Lesson', {
                                 method: 'POST', // set the HTTP method as 'POST'
                                 headers: {
@@ -301,7 +302,7 @@
                                 .then(response => response.json())
                                 .then(responseJSON => {
                                     console.log('Success:', responseJSON);
-                                });
+                                });*/
                             return sortedValues7;
                         case 8:
                             let sortedValues8 = this.lessons.sort((a, b) => {
@@ -314,6 +315,7 @@
                                 }
                             })
                             localStorage.setItem("Lessons", JSON.stringify(sortedValues8));
+                            /*
                             fetch('https://cst3145--cw2.herokuapp.com/collection/Lesson', {
                                 method: 'POST', // set the HTTP method as 'POST'
                                 headers: {
@@ -324,7 +326,7 @@
                                 .then(response => response.json())
                                 .then(responseJSON => {
                                     console.log('Success:', responseJSON);
-                                });
+                                }); */
                             return sortedValues8;
                     }
                 },

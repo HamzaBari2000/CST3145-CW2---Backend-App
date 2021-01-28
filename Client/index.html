@@ -314,6 +314,17 @@
                                 }
                             })
                             localStorage.setItem("Lessons", JSON.stringify(sortedValues8));
+                            fetch('https://cst3145--cw2.herokuapp.com/collection/Lesson', {
+                                method: 'POST', // set the HTTP method as 'POST'
+                                headers: {
+                                    'Content-Type': 'application/json', // set the data type as JSON
+                                },
+                                body: JSON.stringify(sortedValues8), // need to stringify the JSON object
+                            })
+                                .then(response => response.json())
+                                .then(responseJSON => {
+                                    console.log('Success:', responseJSON);
+                                });
                             return sortedValues8;
                     }
                 },

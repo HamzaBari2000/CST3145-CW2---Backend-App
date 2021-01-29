@@ -188,17 +188,17 @@
                     this.displayLessonsCart.push(lesson);   //Pushing the lessing into the Cart Array.
                     localStorage.setItem("Cart", JSON.stringify(this.displayLessonsCart));  //Updatimg the Cart each time a lesson is added. 
 
-                    // set the url to your server and route
+                    //Set the url to your heroku server and route
                     fetch('https://cst3145--cw2.herokuapp.com/collection/Lesson/' + this.lessons[Space]._id, {
-                        method: 'PUT', // set the HTTP method as 'PUT'
+                        method: 'PUT', //Set the HTTP method as 'PUT'
                         headers: {
-                            'Content-Type': 'application/json', // set the data type as JSON
+                            'Content-Type': 'application/json', //Set the data type as JSON
                         },
-                        body: JSON.stringify({ "Space": this.counter(lesson) }), // need to stringify the JSON object
+                        body: JSON.stringify({ "Space": this.counter(lesson) }), //Need to stringify the JSON object
                     })
                         .then(response => response.json())
                         .then(responseJSON => {
-                            console.log('Success:', responseJSON);
+                            console.log('Success:', responseJSON);  //Retuns the message of success.
                         });
 
                 },
@@ -334,33 +334,34 @@
                     };
                     this.orders.push(userDetails);
 
-                    // set the url to your server and route
+                    //Setting the url to the server and route of the server.
                     fetch('https://cst3145--cw2.herokuapp.com/collection/Order', {
-                        method: 'POST', // set the HTTP method as 'POST'
+                        method: 'POST', //seting the HTTP method as 'POST'
                         headers: {
-                            'Content-Type': 'application/json', // set the data type as JSON
+                            'Content-Type': 'application/json', //Setting the data type being sent as JSON.
                         },
-                        body: JSON.stringify(this.orders), // need to stringify the JSON object
+                        body: JSON.stringify(this.orders), //Need to stringify the JSON object
                     })
                         .then(response => response.json())
                         .then(responseJSON => {
-                            console.log('Success:', responseJSON);
+                            console.log('Success:', responseJSON);  //Returns the success message.
                         });
 
                     this.displayLessonsCart = [];   //clears the cart after the order has been purchased.
                     localStorage.setItem("Cart", JSON.stringify(this.displayLessonsCart));  //Resetting the cart array.
 
+                    //The for loop is used for updating all the 10 lessons Space data by getting each of their object ID.
                     for (let i = 0; i < 10; i++) {
-                        fetch('https://cst3145--cw2.herokuapp.com/collection/Lesson/' + this.lessons[i]._id, {
-                            method: 'PUT', // set the HTTP method as 'PUT'
+                        fetch('https://cst3145--cw2.herokuapp.com/collection/Lesson/' + this.lessons[i]._id, {  //The heroku server and the router for the lessons.
+                            method: 'PUT', //Setting the HTTP method as 'PUT'.
                             headers: {
-                                'Content-Type': 'application/json', // set the data type as JSON
+                                'Content-Type': 'application/json', //Setting the data type as JSON
                             },
-                            body: JSON.stringify({ "Space": 5 }), // need to stringify the JSON object
+                            body: JSON.stringify({ "Space": 5 }), //Need to stringify the JSON object
                         })
                             .then(response => response.json())
                             .then(responseJSON => {
-                                console.log('Success:', responseJSON);
+                                console.log('Success:', responseJSON); //Returns the success message.
                             });
                     }
 
@@ -387,13 +388,14 @@
                     }
                 },
             },
-            created: function () {
+            created: function () {  //This Function will be executed when the client front end loads up. Runs when the VUE insatnce is created.
+                //The Fetch has the heroku and the GET collections route
                 fetch('https://cst3145--cw2.herokuapp.com/collection/Lesson').then(
-                    function (response) {
+                    function (response) {   //Returns the result from the Server when the fetch promise resolves.
                         response.json().then(
                             function (json) {
-                                // note that we used 'store.product' instead of 'this.product'
-                                lessonApp.lessons = json;
+                                //Saving the return JSON Object from the Server to the lessons vue data member.
+                                lessonApp.lessons = json;   //Lesson app is the name of the VUE Object and lessons is its data member.
                             });
                     })
             }

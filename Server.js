@@ -19,6 +19,7 @@ MongoClient.connect(
   }
 );
 
+//Getting the collection name from MongoDB
 //This middleware is used for selecting a particular collection.
 app.param("collectionName", (req, res, next, collectionName) => {
   req.collection = db.collection(collectionName); //Gets the collection name.

@@ -1,0 +1,15 @@
+{
+    "name": "After School App PWA",
+    "short_name": "AfterSchool",
+    "description": "This App is for children learning.",
+    "icons": [
+        {
+            "src": "img/icon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "app.html",
+    "display": "fullscreen",
+    "background_color": "maroon"
+}

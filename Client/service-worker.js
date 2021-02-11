@@ -1,7 +1,7 @@
 let cacheName = "lessonsApp-v2";
 
 let cacheFiles = [
-  "app.html",
+  "index.html",
   "../Lesson_Collection.json",
   "lessonsApp.webmanifest",
   "img/icon.png",

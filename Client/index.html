@@ -334,17 +334,17 @@
                     };
                     this.orders.push(userDetails);
 
-                    //Setting the url to the server and route of the server.
+
                     fetch('https://cst3145--cw2.herokuapp.com/collection/Order', {
-                        method: 'POST', //seting the HTTP method as 'POST'
+                        method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json', //Setting the data type being sent as JSON.
+                            'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify(this.orders), //Need to stringify the JSON object
+                        body: JSON.stringify(this.orders),
                     })
                         .then(response => response.json())
                         .then(responseJSON => {
-                            console.log('Success:', responseJSON);  //Returns the success message.
+                            console.log('Success:', responseJSON);
                         });
 
                     this.displayLessonsCart = [];   //clears the cart after the order has been purchased.
@@ -370,32 +370,32 @@
                         location.reload();
                     }, 5000);   //Refreshes after 5 seconds. 
                 },
-                validateCheckout(name, phoneNumber) {   //This function is used to validate the name and the phonenumber.
+                validateCheckout(name, phoneNumber) {
                     let regExname = /^[A-Za-z]+$/;
                     let regExphoneNumber = /^[\s()+-]*([0-9][\s()+-]*){11,20}$/;
-                    return regExname.test(name) && regExphoneNumber.test(phoneNumber);  //It will check the name and phonenumber with each of their regex.
+                    return regExname.test(name) && regExphoneNumber.test(phoneNumber);
                 },
             },
             computed: {
                 cartItemCount() {
-                    return this.displayLessonsCart.length; //Returns the number of items inside the cart and will update on the increse and decrease.
+                    return this.displayLessonsCart.length;
                 },
-                checkCheckout() { //This function checks the validation of the name and phonenumber inputted by the validate function.
+                checkCheckout() {
                     if (!this.validateCheckout(this.checkout.Name, this.checkout.PhoneNo)) {
-                        return false;   //Returns false which means either the name, phonoNo, or Both are incorrect.
+                        return false;
                     } else {
-                        return true;    //Returns true if both matches the regex. 
+                        return true;
                     }
                 },
             },
-            created: function () {  //This Function will be executed when the client front end loads up. Runs when the VUE insatnce is created.
-                //The Fetch has the heroku and the GET collections route
+            created: function () {
+
                 fetch('https://cst3145--cw2.herokuapp.com/collection/Lesson').then(
-                    function (response) {   //Returns the result from the Server when the fetch promise resolves.
+                    function (response) {
                         response.json().then(
                             function (json) {
-                                //Saving the return JSON Object from the Server to the lessons vue data member.
-                                lessonApp.lessons = json;   //Lesson app is the name of the VUE Object and lessons is its data member.
+
+                                lessonApp.lessons = json;
                             });
                     })
             }

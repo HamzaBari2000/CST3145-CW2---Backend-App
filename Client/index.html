@@ -357,7 +357,7 @@
                             headers: {
                                 'Content-Type': 'application/json', //Setting the data type as JSON
                             },
-                            body: JSON.stringify({ "Space": 5 }), //Need to stringify the JSON object
+                            body: JSON.stringify({ "Space": this.lessons.Space }), //Need to stringify the JSON object
                         })
                             .then(response => response.json())
                             .then(responseJSON => {

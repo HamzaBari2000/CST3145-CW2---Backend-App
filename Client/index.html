@@ -335,6 +335,7 @@
 
                     this.displayLessonsCart = [];   //clears the cart after the order has been purchased.
                     localStorage.setItem("Cart", JSON.stringify(this.displayLessonsCart));  //Resetting the cart array.
+                    console.log(this.lessons.Space)
 
                     //The for loop is used for updating all the 10 lessons Space data by getting each of their object ID.
                     for (let i = 0; i < 10; i++) {

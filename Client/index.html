@@ -187,20 +187,6 @@
                     this.btnCart = true;    //If one lesson is added to the cart then it will show the cart button.
                     this.displayLessonsCart.push(lesson);   //Pushing the lessing into the Cart Array.
                     localStorage.setItem("Cart", JSON.stringify(this.displayLessonsCart));  //Updatimg the Cart each time a lesson is added. 
-
-                    //Set the url to your heroku server and route
-                    fetch('https://cst3145--cw2.herokuapp.com/collection/Lesson/' + this.lessons[Space]._id, {
-                        method: 'PUT', //Set the HTTP method as 'PUT'
-                        headers: {
-                            'Content-Type': 'application/json', //Set the data type as JSON
-                        },
-                        body: JSON.stringify({ "Space": this.counter(lesson) }), //Need to stringify the JSON object
-                    })
-                        .then(response => response.json())
-                        .then(responseJSON => {
-                            console.log('Success:', responseJSON);  //Retuns the message of success.
-                        });
-
                 },
                 canAddToCart(lesson) {
                     //Comparing how many is already in the cart with the actual lesson space. 
